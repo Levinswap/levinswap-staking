@@ -3,6 +3,7 @@ import { View, ViewProps } from "react-native";
 
 interface FlexViewProps extends ViewProps {
     direction?: "row" | "column";
+   
 }
 
 const FlexView: FunctionComponent<FlexViewProps> = props => {

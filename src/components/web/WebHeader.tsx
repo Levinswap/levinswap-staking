@@ -43,6 +43,7 @@ const WebHeader: FC<WebHeaderProps> = props => {
                     alignItems: "flex-end",
                     paddingTop: Spacing.small,
                     paddingHorizontal: Spacing.normal
+                   
                 }}>
                 <Title />
                 {IS_DESKTOP ? <Menu /> : <MenuIcon onExpand={props.onExpandMenu} />}
@@ -79,6 +80,7 @@ const Menu = () => {
                 alignItems: "center"
             }}>
             <MenuItem title={t("menu.stake")} path={"/staking"} />
+            <MenuItem title={t("unstake")} path={"/staking/unstake"} />
             <DarkModeSwitch style={{ marginLeft: Spacing.small }} />
             <Status />
         </FlexView>
@@ -96,7 +98,8 @@ const MenuItem = ({ title, path }) => {
                     fontFamily: "regular",
                     fontSize: 18,
                     color: active ? textDark : textLight,
-                    padding: 3
+                    padding: 20,
+                    
                 }}>
                 {title}
             </Text>

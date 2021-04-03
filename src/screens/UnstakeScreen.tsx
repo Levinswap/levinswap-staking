@@ -18,7 +18,6 @@ import Text from "../components/Text";
 import Title from "../components/Title";
 import TokenInput from "../components/TokenInput";
 import WebFooter from "../components/web/WebFooter";
-import { StakingSubMenu } from "../components/web/WebSubMenu";
 import { IS_DESKTOP, Spacing } from "../constants/dimension";
 import { EthersContext } from "../context/EthersContext";
 import useStakingState, { StakingState } from "../hooks/useStakingState";
@@ -40,7 +39,6 @@ const UnstakeScreen = () => {
                 </Content>
                 {Platform.OS === "web" && <WebFooter />}
             </Container>
-            <StakingSubMenu />
         </Screen>
     );
 };

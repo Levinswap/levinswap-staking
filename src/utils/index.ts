@@ -4,6 +4,11 @@ import { ETH } from "../constants/tokens";
 import Token from "../types/Token";
 import getContract from "./getContract";
 
+const CustomWETH = {
+    ...WETH,
+    100: new SDKToken(100, "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1", 18, "WETH", "Wrapped Ether on xDai")
+};
+
 export const formatUSD = (value: number, maxFraction = 0) => {
     const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -47,14 +52,14 @@ export const isEmptyValue = (text: string) =>
 
 export const isETH = (token?: Token) => token?.address.toLowerCase() === ETH.address.toLowerCase();
 
-export const isWETH = (token?: Token) => token?.address.toLowerCase() === WETH[1].address.toLowerCase();
+export const isWETH = (token?: Token) => token?.address.toLowerCase() === CustomWETH[100].address.toLowerCase();
 
 export const isETHWETHPair = (fromToken?: Token, toToken?: Token) => {
     return (isETH(fromToken) && isWETH(toToken)) || (isWETH(fromToken) && isETH(toToken));
 };
 
 export const convertToken = (token: Token) => {
-    return token.symbol === "ETH" ? WETH["1"] : new SDKToken(ChainId.MAINNET, token.address, token.decimals);
+    return token.symbol === "ETH" ? CustomWETH[100] : new SDKToken(ChainId.MAINNET, token.address, token.decimals);
 };
 
 export const convertAmount = (token: Token, amount: string) => {

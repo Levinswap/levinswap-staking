@@ -1,7 +1,7 @@
 import { FACTORY_ADDRESS as SUSHISWAP_FACTORY, Pair } from "@sushiswap/sdk";
 import sushiData from "@sushiswap/sushi-data";
 import { FACTORY_ADDRESS as UNISWAP_FACTORY } from "@uniswap/sdk";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { LP_TOKEN_SCANNER, MASTER_CHEF, ORDER_BOOK, SETTLEMENT } from "../constants/contracts";
 import Fraction from "../constants/Fraction";
 import { ETH } from "../constants/tokens";
@@ -24,7 +24,7 @@ import {
 const blocksPerDay = 6500;
 
 export const fetchTokens = async (account: string, customTokens?: Token[]) => {
-    const response = await fetch("https://lite.sushi.com/tokens.json");
+    const response = await fetch("https://ipfs.io/ipfs/QmYY5TzSSzbBU98QKyUPn11QhXzaM56gGmqcUq6zAh2sX8");
     const json = await response.json();
     const tokens = [...json.tokens, ...(customTokens || [])];
 
@@ -32,6 +32,7 @@ export const fetchTokens = async (account: string, customTokens?: Token[]) => {
         account,
         tokens.map(token => token.address)
     );
+
     return [
         {
             ...ETH,
@@ -39,7 +40,7 @@ export const fetchTokens = async (account: string, customTokens?: Token[]) => {
         },
         ...tokens.map((token, i) => ({
             ...token,
-            balance: ethers.BigNumber.from(balances[i] || 0)
+            balance: balances[i] || 0
         }))
     ];
 };
@@ -329,8 +330,20 @@ const fetchTotalValue = async (token: Token, lpPair: Pair, weth: Token, wethPric
 };
 
 const fetchTokenBalances = async (account: string, addresses: string[]) => {
-    const balances = await ALCHEMY_PROVIDER.send("alchemy_getTokenBalances", [account, addresses]);
-    return balances.tokenBalances.map(balance => balance.tokenBalance);
+    console.log(
+        addresses.find(a => a === "0x1698cD22278ef6E7c0DF45a8dEA72EDbeA9E42aa"),
+        account
+    );
+    const balances = await Promise.all<{ result: string; status: string; message: string }>(
+        addresses.map(address => {
+            return fetch(
+                `https://blockscout.com/xdai/mainnet/api?module=account&action=tokenbalance&contractaddress=${address}&address=${account}`
+            ).then(res => res.json());
+        })
+    );
+
+    return balances.map(b => BigNumber.from(b.result));
+    // return balances.map(b => ethers.utils.formatEther(BigNumber.from(b.result)));
 };
 
 const LIMIT_ORDERS_LIMIT = 20;

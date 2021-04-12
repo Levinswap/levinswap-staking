@@ -1,3 +1,4 @@
+import { BigNumber } from "@ethersproject/bignumber";
 import React, { useContext, useState } from "react";
 import { Platform, View } from "react-native";
 
@@ -43,7 +44,6 @@ const StakeScreen = () => {
                 </Content>
                 {Platform.OS === "web" && <WebFooter />}
             </Container>
-            
         </Screen>
     );
 };
@@ -52,13 +52,14 @@ const Staking = () => {
     const { chainId } = useContext(EthersContext);
     const t = useTranslation();
     const state = useStakingState();
+    console.log(state);
     if (chainId !== 100) return <ChangeNetwork />;
     return (
         <View style={{ marginTop: Spacing.large }}>
             <SushiBalance state={state} />
             <Border />
             <AmountInput state={state} />
-            {state.sushi && state.sushi.balance.isZero() && (
+            {state.sushi && state.sushi.balance === BigNumber.from("0") && (
                 <Notice text={t("you-dont-have-sushi")} color={"orange"} style={{ marginTop: Spacing.small }} />
             )}
             <StakeInfo state={state} />
@@ -73,7 +74,7 @@ const SushiBalance = ({ state }: { state: StakingState }) => {
             <Heading text={t("your-sushi")} />
             <AmountMeta
                 amount={state.sushi ? formatBalance(state.sushi.balance, state.sushi.decimals) : ""}
-                suffix={"SUSHI"}
+                suffix={"LEVIN"}
             />
         </View>
     );
@@ -81,7 +82,7 @@ const SushiBalance = ({ state }: { state: StakingState }) => {
 
 const AmountInput = ({ state }: { state: StakingState }) => {
     const t = useTranslation();
-    if (!state.sushi || state.sushi.balance.isZero()) {
+    if (!state.sushi || state.sushi.balance === BigNumber.from("0")) {
         return <Heading text={t("amount-to-stake")} disabled={true} />;
     }
     return (
@@ -102,7 +103,7 @@ const StakeInfo = ({ state }: { state: StakingState }) => {
     const t = useTranslation();
     const disabled =
         !state.sushi ||
-        state.sushi.balance.isZero() ||
+        state.sushi.balance === BigNumber.from("0") ||
         !state.xSushi ||
         !state.sushiStaked ||
         !state.xSushiSupply ||
@@ -110,8 +111,8 @@ const StakeInfo = ({ state }: { state: StakingState }) => {
     const xSushiAmount = disabled
         ? undefined
         : parseBalance(state.amount, state.sushi!.decimals)
-            .mul(state.xSushiSupply!)
-            .div(state.sushiStaked!);
+              .mul(state.xSushiSupply!)
+              .div(state.sushiStaked!);
     const xSushiTotal = disabled ? undefined : formatBalance(state.xSushiSupply!, state.xSushi!.decimals, 8);
     const xSushiBalance = disabled ? undefined : state.xSushi!.balance.add(xSushiAmount!);
     const share = disabled
@@ -135,7 +136,7 @@ const Controls = ({ state }: { state: StakingState }) => {
     const [error, setError] = useState<MetamaskError>({});
     return (
         <View style={{ marginTop: Spacing.normal }}>
-            {!state.sushi || state.sushi.balance.isZero() || isEmptyValue(state.amount) ? (
+            {!state.sushi || state.sushi.balance === BigNumber.from("0") || isEmptyValue(state.amount) ? (
                 <StakeButton state={state} onError={setError} disabled={true} />
             ) : parseBalance(state.amount, state.sushi.decimals).gt(state.sushi.balance) ? (
                 <InsufficientBalanceButton symbol={state.sushi.symbol} />

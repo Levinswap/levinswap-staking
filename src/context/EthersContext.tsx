@@ -29,20 +29,20 @@ export const KOVAN_PROVIDER = new ethers.providers.AlchemyProvider(
 
 export const EthersContext = React.createContext({
     ethereum: undefined as Ethereum | undefined,
-    setEthereum: (_ethereum: Ethereum | undefined) => { },
+    setEthereum: (_ethereum: Ethereum | undefined) => {},
     provider: undefined as ethers.providers.JsonRpcProvider | undefined,
     signer: undefined as ethers.providers.JsonRpcSigner | undefined,
     chainId: 0,
     address: null as string | null,
     ensName: null as string | null,
-    addOnBlockListener: (_name: string, _listener: OnBlockListener) => { },
-    removeOnBlockListener: (_name: string) => { },
+    addOnBlockListener: (_name: string, _listener: OnBlockListener) => {},
+    removeOnBlockListener: (_name: string) => {},
     tokens: [ETH] as TokenWithValue[],
-    updateTokens: async () => { },
+    updateTokens: async () => {},
     loadingTokens: false,
     customTokens: [ETH] as Token[],
-    addCustomToken: (_token: Token) => { },
-    removeCustomToken: (_token: Token) => { },
+    addCustomToken: (_token: Token) => {},
+    removeCustomToken: (_token: Token) => {},
     approveToken: async (_token: string, _spender: string, _amount?: ethers.BigNumber) => {
         return {} as ethers.providers.TransactionResponse | undefined;
     },
@@ -105,9 +105,9 @@ export const EthersContextProvider = ({ children }) => {
             ethereum.on("chainChanged", onChainChanged);
             ethereum.on("disconnect", onDisconnect);
             return () => {
-                ethereum.off("accountsChanged", onAccountsChanged);
-                ethereum.off("chainChanged", onAccountsChanged);
-                ethereum.off("disconnect", onDisconnect);
+                // ethereum.off("accountsChanged", onAccountsChanged);
+                // ethereum.off("chainChanged", onAccountsChanged);
+                // ethereum.off("disconnect", onDisconnect);
             };
         }
     }, [ethereum]);
@@ -123,13 +123,23 @@ export const EthersContextProvider = ({ children }) => {
         if (address && chainId && customTokens) {
             try {
                 const list = await fetchTokens(address, customTokens);
+                console.log(
+                    list,
+                    list.map(l => l.symbol)
+                );
                 const weth = list.find(t => isWETH(t));
                 const p = chainId === 100 ? provider : ALCHEMY_PROVIDER;
                 if (list?.length > 0 && weth && p) {
-                    const wethPriceUSD = Fraction.parse(String(await sushiData.weth.price()));
+                    console.log(weth, p);
+                    const wethPriceUSD = Fraction.parse(String(weth.balance));
+                    console.log(await sushiData.weth.price());
                     setTokens(
                         await Promise.all(
-                            list.map(async token => await fetchTokenWithValue(token, weth, wethPriceUSD, getPair, p))
+                            list.map(async token => ({
+                                ...token,
+                                priceUSD: wethPriceUSD,
+                                valueUSD: wethPriceUSD
+                            }))
                         )
                     );
                 }

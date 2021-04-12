@@ -41,6 +41,7 @@
     "i18n-js": "^3.8.0",
     "modal-react-native-web": "^0.2.0",
     "moment": "^2.29.1",
+    "node-libs-react-native": "^1.2.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",

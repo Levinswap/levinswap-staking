@@ -52,7 +52,6 @@ const Staking = () => {
     const { chainId } = useContext(EthersContext);
     const t = useTranslation();
     const state = useStakingState();
-    console.log(state);
     if (chainId !== 100) return <ChangeNetwork />;
     return (
         <View style={{ marginTop: Spacing.large }}>
@@ -107,7 +106,7 @@ const StakeInfo = ({ state }: { state: StakingState }) => {
         !state.xSushi ||
         !state.sushiStaked ||
         !state.xSushiSupply ||
-        isEmptyValue(state.amount);
+        isEmptyValue(state.amount);   
     const xSushiAmount = disabled
         ? undefined
         : parseBalance(state.amount, state.sushi!.decimals)
@@ -117,12 +116,12 @@ const StakeInfo = ({ state }: { state: StakingState }) => {
     const xSushiBalance = disabled ? undefined : state.xSushi!.balance.add(xSushiAmount!);
     const share = disabled
         ? undefined
-        : Fraction.from(xSushiAmount!.add(xSushiBalance!), state.xSushiSupply!).toString();
+        : Fraction.from(xSushiAmount!.mul(100), xSushiAmount!.add(state.xSushiSupply!)).toString()  // xSushiAmount / (xSushiAmount + xSushiSupply) * 100
     return (
         <InfoBox>
             <AmountMeta
                 amount={xSushiAmount ? formatBalance(xSushiAmount, state.xSushi!.decimals, 8) : ""}
-                suffix={"xSUSHI"}
+                suffix={"xLEVIN"}
                 disabled={disabled}
             />
             <Meta label={t("xsushi-share")} text={share} suffix={"%"} disabled={disabled} />

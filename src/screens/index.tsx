@@ -14,16 +14,8 @@ import { GlobalContext } from "../context/GlobalContext";
 import useColors from "../hooks/useColors";
 import EmptyScreen from "./EmptyScreen";
 
-const FarmingScreen = lazy(() => import("./FarmingScreen"));
-const HarvestScreen = lazy(() => import("./HarvestScreen"));
-const LiquidityScreen = lazy(() => import("./LiquidityScreen"));
-const MigrateScreen = lazy(() => import("./MigrateScreen"));
-const MyLimitOrdersScreen = lazy(() => import("./MyLimitOrdersScreen"));
-const RemoveLiquidityScreen = lazy(() => import("./RemoveLiquidityScreen"));
 const StakeScreen = lazy(() => import("./StakeScreen"));
 const UnstakeScreen = lazy(() => import("./UnstakeScreen"));
-const SwapScreen = lazy(() => import("./SwapScreen"));
-const HomeScreen = lazy(() => import("./HomeScreen"));
 
 export const Screens = () => {
     const { load } = useContext(GlobalContext);

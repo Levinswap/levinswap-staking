@@ -54,7 +54,7 @@ const Staking = () => {
             <Border />
             <AmountInput state={state} />
             {state.xSushi && state.xSushi.balance.isZero() && (
-                <Notice text={t("you-dont-have-xsushi")} color={"orange"} style={{ marginTop: Spacing.small }} />
+                <Notice text={t("you-dont-have-xsushi")} color={"#a27395"} style={{ marginTop: Spacing.small }} />
             )}
             <UnstakeInfo state={state} />
         </View>
@@ -68,7 +68,7 @@ const XSushiBalance = ({ state }: { state: StakingState }) => {
             <Heading text={t("your-xsushi")} />
             <AmountMeta
                 amount={state.xSushi ? formatBalance(state.xSushi.balance, state.xSushi.decimals) : ""}
-                suffix={"xSUSHI"}
+                suffix={"xLEVIN"}
             />
         </View>
     );
@@ -104,7 +104,7 @@ const UnstakeInfo = ({ state }: { state: StakingState }) => {
         <InfoBox>
             <AmountMeta
                 amount={sushiAmount ? formatBalance(sushiAmount, state.sushi!.decimals, 8) : ""}
-                suffix={"SUSHI"}
+                suffix={"LEVIN"}
                 disabled={disabled}
             />
             <Controls state={state} />

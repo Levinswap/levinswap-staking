@@ -26,22 +26,12 @@ const WebFooter = ({ simple = false }) => {
         <View style={{ width: "100%", padding: Spacing.normal, alignItems: "center" }}>
             {!simple && (
                 <>
-                    <SocialIcons />
-                    <TouchableHighlight onPress={onPressAlchemy}>
-                        <Image
-                            source={require("../../../assets/alchemy.png")}
-                            style={{ width: 188, height: 40, marginTop: Spacing.tiny }}
-                        />
-                    </TouchableHighlight>
                 </>
             )}
             <FlexView style={{ marginTop: Spacing.small }}>
                 <Flag name={"us"} locale={"en"} />
                 <Flag name={"es"} locale={"es"} />
                 <Flag name={"fr"} locale={"fr"} />
-                <Flag name={"cn"} locale={"zh"} />
-                <Flag name={"jp"} locale={"jp"} />
-                <Flag name={"kr"} locale={"ko"} />
             </FlexView>
         </View>
     );

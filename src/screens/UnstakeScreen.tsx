@@ -125,7 +125,7 @@ const Controls = ({ state }: { state: StakingState }) => {
             ) : (
                 <UnstakeButton state={state} onError={setError} disabled={false} />
             )}
-            {error.message && error.code !== 4001 && <ErrorMessage error={error} />}
+            {console.log("error")}
         </View>
     );
 };

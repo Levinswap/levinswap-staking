@@ -5,7 +5,7 @@ import { BigNumber, ethers } from "ethers";
 import { LP_TOKEN_SCANNER, MASTER_CHEF, ORDER_BOOK, SETTLEMENT } from "../constants/contracts";
 import Fraction from "../constants/Fraction";
 import { ETH } from "../constants/tokens";
-import { ALCHEMY_PROVIDER, KOVAN_PROVIDER } from "../context/EthersContext";
+import { ALCHEMY_PROVIDER } from "../context/EthersContext";
 import { Order, OrderStatus } from "../hooks/useSettlement";
 import LPToken from "../types/LPToken";
 import Token from "../types/Token";
@@ -354,7 +354,7 @@ export const fetchMyLimitOrders = async (
     tokens?: Token[],
     canceledHashes?: string[]
 ) => {
-    const orderBook = getContract("OrderBook", ORDER_BOOK, KOVAN_PROVIDER);
+    const orderBook = getContract("OrderBook", ORDER_BOOK, ALCHEMY_PROVIDER);
     const settlement = await getContract("Settlement", SETTLEMENT, provider);
     const maker = await signer.getAddress();
     const length = await orderBook.numberOfHashesOfMaker(maker);

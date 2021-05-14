@@ -17,7 +17,7 @@ const MobileNotSupported = () => {
                 padding: Spacing.normal
             }}>
             <Image
-                source={require("../../../assets/sushiswap.jpg")}
+                source={require("../../../assets/levinswap.jpg")}
                 style={{ width: 192, height: 192, marginBottom: Spacing.normal }}
             />
             <Title />

@@ -17,7 +17,7 @@ const ConnectWallet = () => {
         ? darkMode
             ? require("../../../assets/metamask-dark.png")
             : require("../../../assets/metamask.png")
-        : require("../../../assets/sushiswap.jpg");
+        : require("../../../assets/levinswap.jpg");
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Image
